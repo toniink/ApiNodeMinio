@@ -1,0 +1,25 @@
+{
+  "name": "apinodeminio",
+  "version": "1.0.0",
+  "description": "Criação de API NodeJS para armazenar e listar objetos com MinIO",
+  "main": "/src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/toniink/ApiNodeMinio.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/toniink/ApiNodeMinio/issues"
+  },
+  "homepage": "https://github.com/toniink/ApiNodeMinio#readme",
+  "dependencies": {
+    "express": "^5.2.1",
+    "minio": "^8.0.7",
+    "multer": "^2.1.1"
+  }
+}

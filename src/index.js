@@ -7,7 +7,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 // Inicializando o cliente oficial do MinIO
 const minioClient = new Minio.Client({
-    endPoint: process.env.MINIO_HOST,  // Apenas o nome do serviço (ex: 'minio')
+    endPoint: process.env.MINIO_HOST,  
     port: parseInt(process.env.MINIO_PORT) || 9000,
     useSSL: false,                     // Como é local, usamos HTTP (false)
     accessKey: process.env.MINIO_ROOT_USER,

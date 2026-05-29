@@ -44,6 +44,41 @@ app.post('/upload', upload.single('file'), async (req, res) => {
     }
 });
 
+// Rota para listar todos os arquivos do bucket
+app.get('/files', (req, res) => {
+    const bucketName = 'meu-bucket';
+    const objectsList = [];
+
+    // listObjectsV2(bucket, prefixo, recursivo)
+    // O prefixo vazio '' significa "buscar tudo". O 'true' indica busca recursiva (inclui subpastas)
+    const stream = minioClient.listObjectsV2(bucketName, '', true);
+
+    // O SDK do MinIO envia os dados em partes (Stream de eventos)
+    stream.on('data', (obj) => {
+        objectsList.push({
+            name: obj.name,
+            size: obj.size,
+            lastModified: obj.lastModified,
+            etag: obj.name.endsWith('/') ? null : obj.etag // Pastas não têm etag
+        });
+    });
+
+    // Quando o stream terminar de ler todos os objetos, enviamos a resposta JSON
+    stream.on('end', () => {
+        res.status(200).json({
+            bucket: bucketName,
+            total_files: objectsList.length,
+            files: objectsList
+        });
+    });
+
+    // Tratamento de erros no stream (ex: se o bucket não existir)
+    stream.on('error', (error) => {
+        console.error('Erro ao listar objetos:', error);
+        res.status(500).json({ error: 'Não foi possível listar os arquivos do MinIO.' });
+    });
+});
+
 const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`API Node.js rodando na porta ${PORT}`);
